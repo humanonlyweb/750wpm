@@ -1,0 +1,13 @@
+{
+  "name": "750wpm",
+  "compatibility_date": "2026-01-17",
+  "compatibility_flags": [
+    "nodejs_compat"
+  ],
+  "main": "./.output/server/index.mjs",
+  "preview_urls": true,
+  "assets": {
+    "binding": "ASSETS",
+    "directory": "./.output/public/"
+  }
+}

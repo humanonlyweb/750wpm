@@ -45,6 +45,35 @@ bun install
 bun dev
 ```
 
+## Deployment
+
+The app auto-deploys to Cloudflare Workers on every push to `main`.
+
+### Setup
+
+1. Fork/clone this repository
+2. Add `CLOUDFLARE_API_TOKEN` to your GitHub repository secrets
+   - Go to **Settings → Secrets and variables → Actions → New repository secret**
+3. Update `wrangler.jsonc` with your domain configuration:
+   ```jsonc
+   {
+     "routes": [
+       {
+         "pattern": "your-domain.com",
+         "custom_domain": true
+       }
+     ]
+   }
+   ```
+4. Push to `main` — the CI workflow handles build and deployment
+
+### Manual Deployment
+
+```bash
+bun run build
+bunx wrangler deploy
+```
+
 ## Tech Stack
 
 Nuxt 4, Vue 3, Dexie, fflate

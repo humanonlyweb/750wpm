@@ -1,22 +1,40 @@
 <script setup lang="ts">
-import type { Article } from "~/types";
+import type { Article, ReadingMode } from "~/types";
 
 const INTRO_TEXT = `The art of reading quickly is not about skipping words, but training your brain to process them faster. RSVP, or Rapid Serial Visual Presentation, shows words one at a time in a fixed position. This eliminates eye movement, which typically accounts for much of reading time.
+
 The red letter marks the Optimal Recognition Point, where your eye naturally focuses. Research shows this is typically located slightly left of center in a word, which is why the highlighting appears there.
+
 With practice, you can dramatically increase your reading speed while maintaining comprehension. Most people read at around 200 to 300 words per minute. But with RSVP training, speeds of 500 to 800 words per minute are achievable.
+
 Start at a comfortable pace and gradually increase until you find your optimal speed. The key is consistency. Even fifteen minutes of practice per day can lead to significant improvements within a few weeks.
+
 Remember that comprehension matters more than raw speed. If you find yourself losing track of meaning, slow down. The goal is efficient understanding, not just fast word recognition.`;
 
 const reader = useRsvpReader();
+const bionicReader = useBionicReader();
+const { readingMode, setReadingMode, fixationPercent, setFixationPercent } = useReadingMode();
 const { updateReadingProgress } = useDatabase();
 const currentArticleId = ref<number | null>(null);
 
 const showHeaderShortcuts = useState("showHeaderShortcuts", () => false);
 
+const hasText = computed(() =>
+  readingMode.value === "rsvp" ? reader.hasText.value : bionicReader.hasText.value,
+);
+
 watch(
-  reader.hasText,
+  hasText,
   (val) => {
     showHeaderShortcuts.value = val;
+  },
+  { immediate: true },
+);
+
+watch(
+  fixationPercent,
+  (val) => {
+    bionicReader.setFixationPercent(val);
   },
   { immediate: true },
 );
@@ -24,11 +42,20 @@ watch(
 function loadIntroText() {
   currentArticleId.value = null;
   reader.loadText(INTRO_TEXT);
+  bionicReader.loadText(INTRO_TEXT);
 }
 
 function handleSelectArticle(article: Article) {
   currentArticleId.value = article.id ?? null;
   reader.loadText(article.content, article.readingProgress ?? 0);
+  bionicReader.loadText(article.content);
+}
+
+function handleModeChange(mode: ReadingMode) {
+  if (reader.isPlaying.value) {
+    reader.pause();
+  }
+  setReadingMode(mode);
 }
 
 async function saveProgress() {
@@ -52,24 +79,46 @@ watch(
 
 <template>
   <div :class="[$style.pageIndex, { [$style.focusMode]: reader.isFocusMode.value }]">
-    <RsvpDisplay
-      :has-text="reader.hasText.value"
-      :current-word="reader.currentWord.value"
-      :is-playing="reader.isPlaying.value"
-      :is-focus-mode="reader.isFocusMode.value"
-      @load-demo="loadIntroText"
+    <ReadingModeToggle
+      v-if="!reader.isFocusMode.value"
+      :mode="readingMode"
+      @update:mode="handleModeChange"
     />
 
-    <RsvpControls
-      v-if="reader.hasText.value && !reader.isFocusMode.value"
-      v-model:wpm="reader.wpm.value"
-      :word-count="reader.wordCount.value"
-      :reading-time-seconds="reader.readingTimeSeconds.value"
-      :progress="reader.progress.value"
-      :is-playing="reader.isPlaying.value"
-      @toggle-play="reader.togglePlay"
-      @reset="reader.reset"
-    />
+    <template v-if="readingMode === 'rsvp'">
+      <RsvpDisplay
+        :has-text="reader.hasText.value"
+        :current-word="reader.currentWord.value"
+        :is-playing="reader.isPlaying.value"
+        :is-focus-mode="reader.isFocusMode.value"
+        @load-demo="loadIntroText"
+      />
+
+      <RsvpControls
+        v-if="reader.hasText.value && !reader.isFocusMode.value"
+        v-model:wpm="reader.wpm.value"
+        :word-count="reader.wordCount.value"
+        :reading-time-seconds="reader.readingTimeSeconds.value"
+        :progress="reader.progress.value"
+        :is-playing="reader.isPlaying.value"
+        @toggle-play="reader.togglePlay"
+        @reset="reader.reset"
+      />
+    </template>
+
+    <template v-else>
+      <BionicDisplay
+        :has-text="bionicReader.hasText.value"
+        :paragraphs="bionicReader.bionicParagraphs.value"
+        @load-demo="loadIntroText"
+      />
+
+      <BionicControls
+        v-if="bionicReader.hasText.value"
+        v-model:fixation-percent="fixationPercent"
+        :word-count="bionicReader.wordCount.value"
+      />
+    </template>
   </div>
 
   <ReadingList

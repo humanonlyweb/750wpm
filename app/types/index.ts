@@ -15,3 +15,17 @@ export interface Article {
   updatedAt: Date;
   readingProgress?: number;
 }
+
+export type ReadingMode = "rsvp" | "bionic";
+
+export interface BionicWord {
+  bold: string;
+  normal: string;
+}
+
+export interface BionicSegment {
+  type: "word" | "space";
+  bold?: string;
+  normal?: string;
+  value?: string;
+}

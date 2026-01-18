@@ -26,7 +26,10 @@ useBionicReader(contentRef);
       <p v-for="(paragraph, pIndex) in paragraphs" :key="pIndex" :class="$style.paragraph">
         <template v-for="(segment, sIndex) in paragraph" :key="sIndex">
           <template v-if="segment.type === 'word'">
-            <span :class="$style.word"><strong>{{ segment.bold }}</strong>{{ segment.normal }}</span>
+            <span :class="$style.word"
+              ><strong>{{ segment.bold }}</strong
+              >{{ segment.normal }}</span
+            >
           </template>
           <template v-else>{{ segment.value }}</template>
         </template>

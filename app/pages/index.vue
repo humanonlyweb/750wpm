@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { Article, ReadingMode } from "~/types";
 
-const INTRO_TEXT = `The art of reading quickly is not about skipping words, but training your brain to process them faster. RSVP, or Rapid Serial Visual Presentation, shows words one at a time in a fixed position. This eliminates eye movement, which typically accounts for much of reading time.
+const INTRO_RSVP = `The art of reading quickly is not about skipping words, but training your brain to process them faster. RSVP, or Rapid Serial Visual Presentation, shows words one at a time in a fixed position. This eliminates eye movement, which typically accounts for much of reading time.
 
 The red letter marks the Optimal Recognition Point, where your eye naturally focuses. Research shows this is typically located slightly left of center in a word, which is why the highlighting appears there.
 
@@ -11,16 +11,47 @@ Start at a comfortable pace and gradually increase until you find your optimal s
 
 Remember that comprehension matters more than raw speed. If you find yourself losing track of meaning, slow down. The goal is efficient understanding, not just fast word recognition.`;
 
-const reader = useRsvpReader();
-const bionicReader = useBionicReader();
+const INTRO_BIONIC = `Bionic Reading is a method that guides your eyes through text by highlighting the initial letters of each word. Your brain completes the rest, allowing for faster and more focused reading.
+
+The bolded portions act as fixation points. Instead of reading every letter, your eye jumps from anchor to anchor while your mind fills in the gaps. This leverages how your brain already processes familiar words.
+
+Adjust the fixation percentage to find your sweet spot. A higher percentage bolds more of each word, which can help with unfamiliar text or when you want more guidance. A lower percentage is faster but requires more mental completion.
+
+Bionic Reading works especially well for skimming articles, reading on screens, and reducing eye fatigue during long reading sessions. Many readers find it particularly helpful in light mode.
+
+Try loading an article from your reading list or importing a file. Use the arrow keys to scroll, or Home and End to jump to the top or bottom.`;
+
+const {
+  readingTimeSeconds,
+  currentIndex,
+  isFocusMode,
+  currentWord,
+  isPlaying,
+  wordCount,
+  hasText,
+  wpm,
+  pause,
+  reset,
+  loadText,
+  togglePlay,
+} = useRsvpReader();
+
+const {
+  hasText: bionicHasText,
+  setFixationPercent: bionicSetFixationPercent,
+  loadText: bionicLoadText,
+  bionicParagraphs,
+  wordCount: bionicWordCount,
+} = useBionicReader();
+
 const { readingMode, setReadingMode, fixationPercent, setFixationPercent } = useReadingMode();
 const { updateReadingProgress } = useDatabase();
-const currentArticleId = ref<number | null>(null);
 
+const currentArticleId = ref<number | null>(null);
 const showHeaderShortcuts = useState("showHeaderShortcuts", () => false);
 
-const hasText = computed(() =>
-  readingMode.value === "rsvp" ? reader.hasText.value : bionicReader.hasText.value,
+const displayHasText = computed(() =>
+  readingMode.value === "rsvp" ? hasText.value : bionicHasText.value,
 );
 
 watch(
@@ -34,41 +65,41 @@ watch(
 watch(
   fixationPercent,
   (val) => {
-    bionicReader.setFixationPercent(val);
+    bionicSetFixationPercent(val);
   },
   { immediate: true },
 );
 
 function loadIntroText() {
   currentArticleId.value = null;
-  reader.loadText(INTRO_TEXT);
-  bionicReader.loadText(INTRO_TEXT);
+  loadText(INTRO_RSVP);
+  bionicLoadText(INTRO_BIONIC);
 }
 
 function handleSelectArticle(article: Article) {
   currentArticleId.value = article.id ?? null;
-  reader.loadText(article.content, article.readingProgress ?? 0);
-  bionicReader.loadText(article.content);
+  loadText(article.content, article.readingProgress ?? 0);
+  bionicLoadText(article.content);
 }
 
 function handleModeChange(mode: ReadingMode) {
-  if (reader.isPlaying.value) {
-    reader.pause();
+  if (isPlaying.value) {
+    pause();
   }
   setReadingMode(mode);
 }
 
 async function saveProgress() {
-  if (currentArticleId.value && reader.currentIndex.value > 0) {
+  if (currentArticleId.value && currentIndex.value > 0) {
     await updateReadingProgress({
       id: currentArticleId.value,
-      progress: reader.currentIndex.value,
+      progress: currentIndex.value,
     });
   }
 }
 
 watch(
-  () => reader.isPlaying.value,
+  () => isPlaying.value,
   (isPlaying, wasPlaying) => {
     if (wasPlaying && !isPlaying) {
       saveProgress();
@@ -78,54 +109,47 @@ watch(
 </script>
 
 <template>
-  <div :class="[$style.pageIndex, { [$style.focusMode]: reader.isFocusMode.value }]">
-    <ReadingModeToggle
-      v-if="!reader.isFocusMode.value"
-      :mode="readingMode"
-      @update:mode="handleModeChange"
-    />
+  <div :class="[$style.pageIndex, { [$style.focusMode]: isFocusMode }]">
+    <ReadingModeToggle v-if="!isFocusMode" :mode="readingMode" @update:mode="handleModeChange" />
 
     <template v-if="readingMode === 'rsvp'">
       <RsvpDisplay
-        :has-text="reader.hasText.value"
-        :current-word="reader.currentWord.value"
-        :is-playing="reader.isPlaying.value"
-        :is-focus-mode="reader.isFocusMode.value"
+        :has-text="displayHasText"
+        :current-word="currentWord"
+        :is-playing="isPlaying"
+        :is-focus-mode="isFocusMode"
         @load-demo="loadIntroText"
       />
 
       <RsvpControls
-        v-if="reader.hasText.value && !reader.isFocusMode.value"
-        v-model:wpm="reader.wpm.value"
-        :word-count="reader.wordCount.value"
-        :reading-time-seconds="reader.readingTimeSeconds.value"
-        :progress="reader.progress.value"
-        :is-playing="reader.isPlaying.value"
-        @toggle-play="reader.togglePlay"
-        @reset="reader.reset"
+        v-if="displayHasText && !isFocusMode"
+        v-model:wpm="wpm"
+        :word-count="wordCount"
+        :reading-time-seconds="readingTimeSeconds"
+        :progress="currentIndex"
+        :is-playing="isPlaying"
+        @toggle-play="togglePlay"
+        @reset="reset"
       />
     </template>
 
     <template v-else>
       <BionicDisplay
-        :has-text="bionicReader.hasText.value"
-        :paragraphs="bionicReader.bionicParagraphs.value"
+        :has-text="bionicHasText"
+        :paragraphs="bionicParagraphs"
         @load-demo="loadIntroText"
       />
 
       <BionicControls
-        v-if="bionicReader.hasText.value"
-        v-model:fixation-percent="fixationPercent"
-        :word-count="bionicReader.wordCount.value"
+        v-if="bionicHasText"
+        :fixation-percent="fixationPercent"
+        :word-count="bionicWordCount"
+        @update:fixation-percent="setFixationPercent"
       />
     </template>
   </div>
 
-  <ReadingList
-    v-if="!reader.isFocusMode.value"
-    :selected-id="currentArticleId"
-    @select="handleSelectArticle"
-  />
+  <ReadingList v-if="!isFocusMode" :selected-id="currentArticleId" @select="handleSelectArticle" />
 </template>
 
 <style lang="scss" module>

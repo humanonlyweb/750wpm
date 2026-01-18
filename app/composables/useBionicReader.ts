@@ -1,4 +1,5 @@
 import type { MaybeRefOrGetter } from "vue";
+
 import type { BionicSegment } from "~/types";
 
 const text = ref("");

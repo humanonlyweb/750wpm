@@ -10,17 +10,8 @@ defineEmits<{
   loadDemo: [];
 }>();
 
-const bionicReader = useBionicReader();
-const contentRef = ref<HTMLElement | null>(null);
-
-watch(
-  () => hasText,
-  async (has) => {
-    await nextTick();
-    bionicReader.setContentEl(has ? contentRef.value : null);
-  },
-  { immediate: true },
-);
+const contentRef = useTemplateRef("contentRef");
+useBionicReader(contentRef);
 </script>
 
 <template>
@@ -31,7 +22,7 @@ watch(
       <Button size="small" outline @click="$emit('loadDemo')"> How it works </Button>
     </div>
 
-    <article v-else ref="contentRef" :class="$style.bionicContent" tabindex="0">
+    <article v-else ref="contentRef" :class="$style.bionicContent">
       <p v-for="(paragraph, pIndex) in paragraphs" :key="pIndex" :class="$style.paragraph">
         <template v-for="(segment, sIndex) in paragraph" :key="sIndex">
           <template v-if="segment.type === 'word'">

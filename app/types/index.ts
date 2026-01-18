@@ -5,7 +5,9 @@ export type IconName =
   | "close"
   | "file-upload"
   | "file-download"
-  | "download";
+  | "download"
+  | "sun"
+  | "moon";
 
 export interface Article {
   id?: number;

@@ -1,10 +1,14 @@
+import type { MaybeRefOrGetter } from "vue";
 import type { BionicSegment } from "~/types";
 
 const text = ref("");
 const fixationPercent = ref(50);
-const contentEl = ref<HTMLElement | null>(null);
+let contentEl: MaybeRefOrGetter<HTMLElement | null | undefined> | null = null;
 
-export function useBionicReader() {
+export function useBionicReader(el?: MaybeRefOrGetter<HTMLElement | null | undefined>) {
+  if (el !== undefined) {
+    contentEl = el;
+  }
   const hasText = computed(() => text.value.trim().length > 0);
 
   const words = computed(() => {
@@ -59,21 +63,18 @@ export function useBionicReader() {
     fixationPercent.value = Math.max(30, Math.min(70, value));
   }
 
-  function setContentEl(el: HTMLElement | null) {
-    contentEl.value = el;
-  }
-
   function scrollBy(amount: number) {
-    contentEl.value?.scrollBy({ top: amount, behavior: "smooth" });
+    toValue(contentEl)?.scrollBy({ top: amount, behavior: "smooth" });
   }
 
   function scrollToTop() {
-    contentEl.value?.scrollTo({ top: 0, behavior: "smooth" });
+    toValue(contentEl)?.scrollTo({ top: 0, behavior: "smooth" });
   }
 
   function scrollToBottom() {
-    if (contentEl.value) {
-      contentEl.value.scrollTo({ top: contentEl.value.scrollHeight, behavior: "smooth" });
+    const el = toValue(contentEl);
+    if (el) {
+      el.scrollTo({ top: el.scrollHeight, behavior: "smooth" });
     }
   }
 
@@ -87,7 +88,6 @@ export function useBionicReader() {
     loadText,
     clear,
     setFixationPercent,
-    setContentEl,
     scrollBy,
     scrollToTop,
     scrollToBottom,

@@ -5,7 +5,10 @@ const showShortcuts = useState("showHeaderShortcuts", () => false);
 <template>
   <header :class="$style.appHeader">
     <NuxtLink to="/" :class="$style.logoWrap">75<span highlight>0</span>wpm</NuxtLink>
-    <KeyboardShortcuts v-if="showShortcuts" />
+    <div :class="$style.headerActions">
+      <KeyboardShortcuts v-if="showShortcuts" />
+      <ThemeToggle />
+    </div>
   </header>
 </template>
 
@@ -22,5 +25,11 @@ const showShortcuts = useState("showHeaderShortcuts", () => false);
     font-weight: 600;
     font-size: 16px;
   }
+}
+
+.headerActions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
 }
 </style>

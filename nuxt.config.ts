@@ -77,8 +77,21 @@ export default defineNuxtConfig({
       ],
     },
     workbox: {
-      navigateFallback: "/",
+      navigateFallback: undefined,
       globPatterns: ["**/*.{js,css,html,png,svg,ico,woff2}"],
+      runtimeCaching: [
+        {
+          urlPattern: /^https:\/\/.*\.(js|css|woff2)$/,
+          handler: "CacheFirst",
+          options: {
+            cacheName: "static-assets",
+            expiration: {
+              maxEntries: 100,
+              maxAgeSeconds: 60 * 60 * 24 * 30, // 30 days
+            },
+          },
+        },
+      ],
     },
     client: {
       installPrompt: true,

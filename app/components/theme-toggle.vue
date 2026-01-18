@@ -27,10 +27,16 @@ const { theme, toggleTheme } = useTheme();
   border-radius: var(--radius-sm);
   color: var(--text-muted);
   cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
   transition:
     background-color var(--transition-default),
     color var(--transition-default),
     border-color var(--transition-default);
+
+  @media (max-width: 480px) {
+    width: 40px;
+    height: 40px;
+  }
 
   @media (hover: hover) {
     &:hover {

@@ -77,14 +77,16 @@ useBionicReader(contentRef);
   min-height: 0;
   padding: 24px 28px;
   overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
   font-family: var(--font-libre);
   font-size: 17px;
   line-height: 1.75;
   letter-spacing: 0.01em;
 
   @media (max-width: 480px) {
-    padding: 20px;
-    font-size: 15px;
+    padding: 16px 18px;
+    font-size: 16px;
+    line-height: 1.8;
   }
 }
 

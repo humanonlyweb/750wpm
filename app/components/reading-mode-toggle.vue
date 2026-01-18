@@ -43,7 +43,7 @@ defineEmits<{
 }
 
 .toggleBtn {
-  padding: 6px 14px;
+  padding: 8px 16px;
   font-size: 12px;
   font-weight: 500;
   color: var(--text-muted);
@@ -52,9 +52,15 @@ defineEmits<{
   border-radius: calc(var(--radius-sm) - 2px);
   cursor: pointer;
   user-select: none;
+  -webkit-tap-highlight-color: transparent;
   transition:
     background-color var(--transition-default),
     color var(--transition-default);
+
+  @media (max-width: 480px) {
+    padding: 10px 18px;
+    font-size: 13px;
+  }
 
   @media (hover: hover) {
     &:hover:not(.active) {

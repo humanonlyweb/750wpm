@@ -1,17 +1,27 @@
 # 750wpm
 
-A speed reading app using RSVP (Rapid Serial Visual Presentation). Words are displayed one at a time at a fixed position, eliminating eye movement and enabling faster reading speeds.
+A speed reading app with two reading modes: RSVP (Rapid Serial Visual Presentation) and Bionic Reading.
 
 ## Features
 
-- **RSVP Reader** with ORP (Optimal Recognition Point) highlighting
-- **Adjustable speed** from 200–1000 WPM
-- **File import** for `.epub`, `.txt`, and `.md` files
-- **Reading list** with progress tracking (stored in IndexedDB)
-- **Focus mode** for distraction-free reading
-- **Keyboard shortcuts** for hands-free control
+- **RSVP Mode** — Words displayed one at a time with ORP (Optimal Recognition Point) highlighting
+- **Bionic Mode** — Full text with bolded word beginnings to guide the eye
+- **Adjustable speed** — 200–1000 WPM (RSVP) or fixation % (Bionic)
+- **File import** — `.epub`, `.txt`, and `.md` files
+- **Reading list** — Progress tracking stored in IndexedDB
+- **Focus mode** — Distraction-free reading (RSVP)
+- **Light/Dark theme** — Respects system preference, persists choice
+- **Keyboard shortcuts** — Hands-free control
 
 ## Keyboard Shortcuts
+
+### Global
+
+| Key | Action |
+|-----|--------|
+| `M` | Toggle reading mode (RSVP/Bionic) |
+
+### RSVP Mode
 
 | Key | Action |
 |-----|--------|
@@ -20,6 +30,13 @@ A speed reading app using RSVP (Rapid Serial Visual Presentation). Words are dis
 | `↑` `↓` | Adjust speed |
 | `Z` | Toggle focus mode |
 | `Esc` | Exit focus mode |
+
+### Bionic Mode
+
+| Key | Action |
+|-----|--------|
+| `↑` `↓` | Scroll up/down |
+| `Home` `End` | Jump to top/bottom |
 
 ## Development
 

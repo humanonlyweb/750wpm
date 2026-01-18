@@ -8,7 +8,9 @@
       <slot />
     </main>
     <footer :class="$style.footer">
-      <NuxtLink to="https://github.com/humanonlyweb/750wpm" external target="_blank">GitHub</NuxtLink>
+      <NuxtLink to="https://github.com/humanonlyweb/750wpm" external target="_blank">
+        GitHub
+      </NuxtLink>
     </footer>
   </div>
 </template>

@@ -1,5 +1,9 @@
 <script setup lang="ts">
 const reader = useRsvpReader();
+const bionicReader = useBionicReader();
+const { readingMode, toggleReadingMode } = useReadingMode();
+
+const SCROLL_AMOUNT = 100;
 
 function handleKeydown(e: KeyboardEvent) {
   if (
@@ -10,31 +14,61 @@ function handleKeydown(e: KeyboardEvent) {
     return;
   }
 
+  const isRsvpMode = readingMode.value === "rsvp";
+  const isBionicMode = readingMode.value === "bionic";
+
   switch (e.code) {
+    case "KeyM":
+      toggleReadingMode();
+      break;
     case "Space":
-      e.preventDefault();
-      if (reader.hasText.value) {
-        reader.togglePlay();
+      if (isRsvpMode) {
+        e.preventDefault();
+        if (reader.hasText.value) {
+          reader.togglePlay();
+        }
       }
       break;
     case "KeyR":
-      if (reader.hasText.value) {
+      if (isRsvpMode && reader.hasText.value) {
         reader.reset();
       }
       break;
     case "ArrowUp":
       e.preventDefault();
-      reader.increaseWpm();
+      if (isRsvpMode) {
+        reader.increaseWpm();
+      } else if (isBionicMode && bionicReader.hasText.value) {
+        bionicReader.scrollBy(-SCROLL_AMOUNT);
+      }
       break;
     case "ArrowDown":
       e.preventDefault();
-      reader.decreaseWpm();
+      if (isRsvpMode) {
+        reader.decreaseWpm();
+      } else if (isBionicMode && bionicReader.hasText.value) {
+        bionicReader.scrollBy(SCROLL_AMOUNT);
+      }
+      break;
+    case "Home":
+      if (isBionicMode && bionicReader.hasText.value) {
+        e.preventDefault();
+        bionicReader.scrollToTop();
+      }
+      break;
+    case "End":
+      if (isBionicMode && bionicReader.hasText.value) {
+        e.preventDefault();
+        bionicReader.scrollToBottom();
+      }
       break;
     case "KeyZ":
-      reader.toggleFocusMode();
+      if (isRsvpMode) {
+        reader.toggleFocusMode();
+      }
       break;
     case "Escape":
-      if (reader.isFocusMode.value) {
+      if (isRsvpMode && reader.isFocusMode.value) {
         reader.toggleFocusMode();
       }
       break;
@@ -47,10 +81,17 @@ onUnmounted(() => window.removeEventListener("keydown", handleKeydown));
 
 <template>
   <div :class="$style.shortcuts" aria-label="Keyboard shortcuts">
-    <p><kbd>space</kbd> Play/Pause</p>
-    <p><kbd>r</kbd> Reset</p>
-    <p><kbd>↑</kbd><kbd>↓</kbd> Speed Up/Down</p>
-    <p><kbd>z</kbd> Focus</p>
+    <p><kbd>m</kbd> Mode</p>
+    <template v-if="readingMode === 'rsvp'">
+      <p><kbd>space</kbd> Play/Pause</p>
+      <p><kbd>r</kbd> Reset</p>
+      <p><kbd>↑</kbd><kbd>↓</kbd> Speed</p>
+      <p><kbd>z</kbd> Focus</p>
+    </template>
+    <template v-else>
+      <p><kbd>↑</kbd><kbd>↓</kbd> Scroll</p>
+      <p><kbd>Home</kbd><kbd>End</kbd> Top/Bottom</p>
+    </template>
   </div>
 </template>
 

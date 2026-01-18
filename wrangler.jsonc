@@ -2,19 +2,17 @@
   "name": "750wpm",
   "workers_dev": false,
   "compatibility_date": "2026-01-17",
-  "compatibility_flags": [
-    "nodejs_compat"
-  ],
+  "compatibility_flags": ["nodejs_compat"],
   "main": "./.output/server/index.mjs",
   "preview_urls": true,
   "assets": {
     "binding": "ASSETS",
-    "directory": "./.output/public/"
+    "directory": "./.output/public/",
   },
   "routes": [
     {
       "pattern": "750wpm.com",
-      "custom_domain": true
-    }
-  ]
+      "custom_domain": true,
+    },
+  ],
 }

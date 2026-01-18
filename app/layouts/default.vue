@@ -8,8 +8,12 @@
       <slot />
     </main>
     <footer :class="$style.footer">
+      <p :class="$style.privacyNote">
+        All articles and reading data are stored locally in your browser. We don't collect or
+        process any user information on our servers.
+      </p>
       <NuxtLink to="https://github.com/humanonlyweb/750wpm" external target="_blank">
-        GitHub
+        Check out the code on GitHub.
       </NuxtLink>
     </footer>
   </div>
@@ -52,7 +56,11 @@
 
 .footer {
   margin-top: auto;
-  padding-top: 24px;
+  padding-top: 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
   text-align: center;
 
   a {
@@ -64,5 +72,13 @@
       text-decoration: underline;
     }
   }
+}
+
+.privacyNote {
+  font-size: 11px;
+  line-height: 1.5;
+  color: var(--text-muted);
+  max-width: 400px;
+  opacity: 0.7;
 }
 </style>

@@ -7,6 +7,9 @@
     <main id="main-content">
       <slot />
     </main>
+    <footer :class="$style.footer">
+      <NuxtLink to="https://github.com/humanonlyweb/750wpm" external target="_blank">GitHub</NuxtLink>
+    </footer>
   </div>
 </template>
 
@@ -42,6 +45,22 @@
     top: 12px;
     outline: 2px solid var(--text);
     outline-offset: 2px;
+  }
+}
+
+.footer {
+  margin-top: auto;
+  padding-top: 24px;
+  text-align: center;
+
+  a {
+    font-size: 12px;
+    color: var(--text-muted);
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
   }
 }
 </style>

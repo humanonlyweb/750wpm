@@ -43,7 +43,7 @@ const wordParts = computed(() => {
         <Button size="small" outline @click="$emit('loadDemo')"> How it works </Button>
       </div>
 
-      <div v-else-if="wordParts" :class="$style.wordDisplay" aria-live="off" aria-atomic="true">
+      <div v-else-if="wordParts" :class="$style.wordDisplay" aria-live="polite" aria-atomic="true">
         <span>{{ wordParts.before }}</span>
         <span :class="$style.orp">{{ wordParts.orp }}</span>
         <span>{{ wordParts.after }}</span>

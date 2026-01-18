@@ -1,4 +1,3 @@
-// TODO(Teena): Use Pinia store
 const text = ref("");
 const currentWord = ref("");
 const isPlaying = ref(false);

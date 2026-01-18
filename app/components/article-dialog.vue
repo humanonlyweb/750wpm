@@ -149,7 +149,6 @@ async function processFile(file: File) {
     title.value = result.title || file.name.replace(/\.[^/.]+$/, "");
     showManualInput.value = true;
   } catch (err) {
-    console.error("Failed to read file:", err);
     loadError.value = err instanceof Error ? err.message : "Failed to read file";
   } finally {
     isLoading.value = false;

@@ -27,6 +27,7 @@ const {
   isFocusMode,
   currentWord,
   isPlaying,
+  isComplete,
   wordCount,
   hasText,
   wpm,
@@ -100,8 +101,17 @@ async function saveProgress() {
 
 watch(
   () => isPlaying.value,
-  (isPlaying, wasPlaying) => {
-    if (wasPlaying && !isPlaying) {
+  (playing, wasPlaying) => {
+    if (wasPlaying && !playing) {
+      saveProgress();
+    }
+  },
+);
+
+watch(
+  () => isComplete.value,
+  (complete) => {
+    if (complete) {
       saveProgress();
     }
   },

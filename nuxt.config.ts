@@ -7,6 +7,7 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   experimental: {
     typescriptPlugin: true,
+    viteEnvironmentApi: true,
   },
   modules: ["@nuxt/fonts", "@vite-pwa/nuxt"],
 

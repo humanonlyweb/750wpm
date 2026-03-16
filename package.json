@@ -7,7 +7,7 @@
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare",
+    "postinstall": "nuxt prepare && simple-git-hooks",
     "lint": "oxlint --type-aware",
     "lint:fix": "oxlint --fix --type-aware",
     "format": "oxfmt .",
@@ -35,12 +35,12 @@
     "wrangler": "^4.73.0"
   },
   "simple-git-hooks": {
-    "pre-commit": "bunx lint-staged"
+    "pre-commit": "npx lint-staged"
   },
   "lint-staged": {
-    "*.{js,ts,tsx,vue}": [
-      "bun run lint:fix",
-      "bun run format"
+    "*.{js,ts,vue}": [
+      "oxfmt .",
+      "oxlint"
     ]
   },
   "packageManager": "bun@1.3.10"

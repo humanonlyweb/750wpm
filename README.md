@@ -17,25 +17,25 @@ A speed reading app with two reading modes: RSVP (Rapid Serial Visual Presentati
 
 ### Global
 
-| Key | Action |
-|-----|--------|
+| Key | Action                            |
+| --- | --------------------------------- |
 | `M` | Toggle reading mode (RSVP/Bionic) |
 
 ### RSVP Mode
 
-| Key | Action |
-|-----|--------|
-| `Space` | Play/Pause |
-| `R` | Reset |
-| `↑` `↓` | Adjust speed |
-| `Z` | Toggle focus mode |
-| `Esc` | Exit focus mode |
+| Key     | Action            |
+| ------- | ----------------- |
+| `Space` | Play/Pause        |
+| `R`     | Reset             |
+| `↑` `↓` | Adjust speed      |
+| `Z`     | Toggle focus mode |
+| `Esc`   | Exit focus mode   |
 
 ### Bionic Mode
 
-| Key | Action |
-|-----|--------|
-| `↑` `↓` | Scroll up/down |
+| Key          | Action             |
+| ------------ | ------------------ |
+| `↑` `↓`      | Scroll up/down     |
 | `Home` `End` | Jump to top/bottom |
 
 ## Development
@@ -60,9 +60,9 @@ The app auto-deploys to Cloudflare Workers on every push to `main`.
      "routes": [
        {
          "pattern": "your-domain.com",
-         "custom_domain": true
-       }
-     ]
+         "custom_domain": true,
+       },
+     ],
    }
    ```
 4. Push to `main` — the CI workflow handles build and deployment

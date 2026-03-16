@@ -3,7 +3,12 @@ const { theme, toggleTheme } = useTheme();
 </script>
 
 <template>
-  <button type="button" :class="$style.themeToggle" :aria-label="`Switch to ${theme} mode`" @click="toggleTheme">
+  <button
+    type="button"
+    :class="$style.themeToggle"
+    :aria-label="`Switch to ${theme} mode`"
+    @click="toggleTheme"
+  >
     <Icon :name="theme === 'dark' ? 'sun' : 'moon'" :size="18" />
   </button>
 </template>

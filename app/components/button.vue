@@ -2,6 +2,7 @@
 import { NuxtLink } from "#components";
 import { computed } from "vue";
 import type { RouteLocationRaw } from "vue-router";
+
 import type { IconName } from "~/types";
 
 const {

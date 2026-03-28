@@ -277,7 +277,7 @@ watch(open, (isOpen) => {
             <label :class="$style.label" for="article-content">Content</label>
             <div :class="$style.contentMeta">
               <span :class="$style.wordCount">
-                {{ wordCount }} {{ wordCount === 1 ? "word" : "words" }}
+                {{ formatCompact(wordCount) }} {{ wordCount === 1 ? "word" : "words" }}
               </span>
               <button
                 v-if="!isEditMode"

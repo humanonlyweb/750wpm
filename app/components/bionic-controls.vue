@@ -11,7 +11,7 @@ const { wordCount = 0 } = defineProps<{
     <div :class="$style.readingInfo">
       <div :class="$style.readingStats">
         <p>
-          <strong>{{ wordCount }}</strong> words
+          <strong>{{ formatCompact(wordCount) }}</strong> words
         </p>
       </div>
 

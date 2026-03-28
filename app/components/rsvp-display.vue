@@ -74,7 +74,7 @@ const wordParts = computed(() => {
     position: absolute;
     left: 50%;
     width: 1px;
-    height: 10%;
+    height: 30%;
     transform: translateX(-50%);
     pointer-events: none;
     background-color: var(--_line-color);

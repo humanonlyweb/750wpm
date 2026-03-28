@@ -24,11 +24,10 @@ defineEmits<{
     <div :class="$style.readingInfo">
       <div :class="$style.readingStats">
         <p>
-          <strong>{{ wordCount }}</strong> words
+          <strong>{{ formatCompact(wordCount) }}</strong> words
         </p>
         <p>
-          <strong>{{ readingTimeSeconds }}</strong
-          >s
+          <strong>{{ formatDuration(readingTimeSeconds) }}</strong>
         </p>
       </div>
 

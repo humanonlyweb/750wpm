@@ -24,6 +24,7 @@ Try loading an article from your reading list or importing a file. Use the arrow
 const {
   readingTimeSeconds,
   currentIndex,
+  progress,
   isFocusMode,
   currentWord,
   isPlaying,
@@ -140,7 +141,7 @@ watch(
         v-model:wpm="wpm"
         :word-count="wordCount"
         :reading-time-seconds="readingTimeSeconds"
-        :progress="currentIndex"
+        :progress="progress"
         :is-playing="isPlaying"
         @toggle-play="togglePlay"
         @reset="reset"

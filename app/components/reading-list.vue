@@ -147,7 +147,7 @@ onMounted(() => {
           </div>
           <small :class="$style.articlePreview">{{ getPreview(article.content) }}</small>
           <div :class="$style.articleMeta">
-            <span>{{ getWordCount(article.content) }} words</span>
+            <span>{{ formatCompact(getWordCount(article.content)) }} words</span>
             <span v-if="article.readingProgress">{{ getProgressPercent(article) }}% read</span>
           </div>
         </li>

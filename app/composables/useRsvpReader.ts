@@ -18,8 +18,13 @@ export function useRsvpReader() {
   const wordCount = computed(() => words.value.length);
 
   const readingTimeSeconds = computed(() => {
-    if (wordCount.value === 0) return 0;
-    return Math.ceil((wordCount.value / wpm.value) * 60);
+    const w = words.value;
+    if (w.length === 0) return 0;
+    let totalMs = 0;
+    for (const word of w) {
+      totalMs += getDelay(word);
+    }
+    return Math.ceil(totalMs / 1000);
   });
 
   const isComplete = computed(() => {

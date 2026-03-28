@@ -156,7 +156,9 @@ async function shareResult() {
         </div>
         <div :class="$style.metaItem">
           <span :class="$style.metaLabel">Reading Time</span>
-          <span :class="$style.metaValue">{{ Math.round(result.readingTimeSeconds) }}s</span>
+          <span :class="$style.metaValue">{{
+            formatDuration(Math.round(result.readingTimeSeconds))
+          }}</span>
         </div>
         <div :class="$style.metaItem">
           <span :class="$style.metaLabel">Correct Answers</span>

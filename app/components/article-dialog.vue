@@ -215,7 +215,7 @@ watch(open, (isOpen) => {
     size="large"
     @close="handleDialogClose"
   >
-    <div :class="$style.form">
+    <form :class="$style.form" @submit.prevent="handleSubmit">
       <div
         v-if="!isEditMode && !hasContent"
         ref="dropZoneRef"
@@ -309,7 +309,7 @@ watch(open, (isOpen) => {
         :class="$style.hiddenInput"
         @change="handleFileChange"
       />
-    </div>
+    </form>
 
     <template #footer>
       <form method="dialog">
@@ -319,6 +319,7 @@ watch(open, (isOpen) => {
         :disabled="!title.trim() || !content.trim() || isSubmitting"
         :is-loading="isSubmitting"
         @click="handleSubmit"
+        type="button"
       >
         {{ submitLabel }}
       </Button>

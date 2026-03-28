@@ -6,7 +6,6 @@ const {
 } = defineProps<{
   hasText?: boolean;
   currentWord?: string;
-  isPlaying?: boolean;
   isFocusMode?: boolean;
 }>();
 
@@ -44,9 +43,9 @@ const wordParts = computed(() => {
       </div>
 
       <div v-else-if="wordParts" :class="$style.wordDisplay" aria-live="polite" aria-atomic="true">
-        <span>{{ wordParts.before }}</span>
+        <span :class="$style.before">{{ wordParts.before }}</span>
         <span :class="$style.orp">{{ wordParts.orp }}</span>
-        <span>{{ wordParts.after }}</span>
+        <span :class="$style.after">{{ wordParts.after }}</span>
       </div>
 
       <div v-else :class="$style.readyText">Press <kbd>Space</kbd> or Play to start</div>
@@ -137,13 +136,25 @@ const wordParts = computed(() => {
 }
 
 .wordDisplay {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
   white-space: nowrap;
   font-family: var(--font-libre);
   letter-spacing: 0.02em;
   font-size: clamp(40px, 10vw, 80px);
+  width: 100%;
+}
+
+.before {
+  text-align: right;
 }
 
 .orp {
   color: var(--accent);
+  text-align: center;
+}
+
+.after {
+  text-align: left;
 }
 </style>

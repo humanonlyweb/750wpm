@@ -26,6 +26,8 @@ const shareText = computed(() => {
   return `I read at ${result.value.wpm} WPM with ${result.value.comprehension}% comprehension — faster than ${result.value.percentile}% of readers. Test yours:`;
 });
 
+const copied = ref(false);
+
 async function shareResult() {
   const text = shareText.value;
   const url = window.location.href;
@@ -33,6 +35,10 @@ async function shareResult() {
     await navigator.share({ text, url }).catch(() => {});
   } else {
     await navigator.clipboard.writeText(`${text} ${url}`);
+    copied.value = true;
+    setTimeout(() => {
+      copied.value = false;
+    }, 2000);
   }
 }
 </script>
@@ -139,7 +145,7 @@ async function shareResult() {
       <div :class="$style.meta">
         <div :class="$style.metaItem">
           <span :class="$style.metaLabel">Speed Rating</span>
-          <span :class="$style.metaValue" highlight>{{ result.speedLabel }}</span>
+          <span :class="$style.metaValue">{{ result.speedLabel }}</span>
         </div>
         <div :class="$style.metaItem">
           <span :class="$style.metaLabel">Faster Than</span>
@@ -172,7 +178,9 @@ async function shareResult() {
 
       <div :class="$style.resultActions">
         <Button variant="primary" size="normal" @click="retake">Take Again</Button>
-        <Button variant="secondary" outline size="normal" @click="shareResult">Share Result</Button>
+        <Button variant="secondary" outline size="normal" @click="shareResult">
+          {{ copied ? "Copied!" : "Share Result" }}
+        </Button>
         <Button variant="secondary" outline size="normal" to="/">Train with 750wpm</Button>
       </div>
     </div>

@@ -126,7 +126,6 @@ watch(
       <RsvpDisplay
         :has-text="displayHasText"
         :current-word="currentWord"
-        :is-playing="isPlaying"
         :is-focus-mode="isFocusMode"
         @load-demo="loadIntroText"
       />

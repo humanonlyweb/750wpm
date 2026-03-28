@@ -1,5 +1,7 @@
 <script setup lang="ts">
+const route = useRoute();
 const showShortcuts = useState("showHeaderShortcuts", () => false);
+const showKeyboardShortcuts = computed(() => showShortcuts.value && route.path === "/");
 </script>
 
 <template>
@@ -7,7 +9,7 @@ const showShortcuts = useState("showHeaderShortcuts", () => false);
     <NuxtLink to="/" :class="$style.logoWrap">75<span highlight>0</span>wpm</NuxtLink>
     <div :class="$style.headerActions">
       <NuxtLink to="/test" :class="$style.testLink">Speed Test</NuxtLink>
-      <KeyboardShortcuts v-if="showShortcuts" />
+      <KeyboardShortcuts v-if="showKeyboardShortcuts" />
       <ThemeToggle />
     </div>
   </header>

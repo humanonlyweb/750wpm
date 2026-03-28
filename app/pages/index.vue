@@ -37,6 +37,11 @@ const {
   togglePlay,
 } = useRsvpReader();
 
+onBeforeRouteLeave(() => {
+  if (isPlaying.value) pause();
+  showHeaderShortcuts.value = false;
+});
+
 const {
   hasText: bionicHasText,
   setFixationPercent: bionicSetFixationPercent,

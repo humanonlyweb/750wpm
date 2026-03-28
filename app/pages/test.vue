@@ -27,6 +27,7 @@ const shareText = computed(() => {
 });
 
 const copied = ref(false);
+let copiedTimer: ReturnType<typeof setTimeout> | null = null;
 
 async function shareResult() {
   const text = shareText.value;
@@ -35,9 +36,11 @@ async function shareResult() {
     await navigator.share({ text, url }).catch(() => {});
   } else {
     await navigator.clipboard.writeText(`${text} ${url}`);
+    if (copiedTimer) clearTimeout(copiedTimer);
     copied.value = true;
-    setTimeout(() => {
+    copiedTimer = setTimeout(() => {
       copied.value = false;
+      copiedTimer = null;
     }, 2000);
   }
 }

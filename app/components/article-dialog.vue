@@ -319,7 +319,6 @@ watch(open, (isOpen) => {
         :disabled="!title.trim() || !content.trim() || isSubmitting"
         :is-loading="isSubmitting"
         @click="handleSubmit"
-        type="button"
       >
         {{ submitLabel }}
       </Button>

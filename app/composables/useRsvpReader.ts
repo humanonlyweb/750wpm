@@ -126,10 +126,6 @@ export function useRsvpReader() {
     setWpm(wpm.value - step);
   }
 
-  onScopeDispose(() => {
-    pause();
-  });
-
   return {
     text: readonly(text),
     currentWord: readonly(currentWord),
